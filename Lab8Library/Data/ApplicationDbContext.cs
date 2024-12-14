@@ -12,6 +12,13 @@ namespace Lab8Library.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            // Configure migrations assembly explicitly
+            optionsBuilder.UseSqlite("Data Source=../Lab8WebApp/Lab8.db",
+                options => options.MigrationsAssembly("Lab8Library"));
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -24,6 +31,5 @@ namespace Lab8Library.Data
 
             // Configure other entities if needed
         }
-
     }
 }

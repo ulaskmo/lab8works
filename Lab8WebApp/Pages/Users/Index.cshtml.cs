@@ -1,29 +1,25 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+using Lab8Library.Models; // Ensure the namespace for User is correct
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using Lab8Library.Data;
-using Lab8Library.Models;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace Lab8WebApp.Pages.Users
 {
     public class IndexModel : PageModel
     {
-        private readonly Lab8Library.Data.ApplicationDbContext _context;
+        public IList<User> Users { get; set; } = new List<User>();
+        
+        private readonly ApplicationDbContext _context;
 
-        public IndexModel(Lab8Library.Data.ApplicationDbContext context)
+        public IndexModel(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        public IList<User> User { get;set; } = default!;
-
         public async Task OnGetAsync()
         {
-            User = await _context.Users.ToListAsync();
+            Users = await _context.Users.ToListAsync();
         }
     }
 }
