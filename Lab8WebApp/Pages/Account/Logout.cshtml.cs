@@ -7,8 +7,8 @@ namespace Lab8WebApp.Pages.Account
     {
         public async Task OnGetAsync()
         {
-            await HttpContext.SignOutAsync("Cookies");
-            Response.Redirect("/Account/Login");
+            await HttpContext.SignOutAsync();
+            ViewData["Message"] = "You have been logged out successfully.";
         }
     }
 }

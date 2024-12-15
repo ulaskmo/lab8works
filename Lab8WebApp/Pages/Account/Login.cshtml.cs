@@ -1,6 +1,7 @@
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
 
 namespace Lab8WebApp.Pages.Account
@@ -11,29 +12,31 @@ namespace Lab8WebApp.Pages.Account
         public string Username { get; set; }
         [BindProperty]
         public string Password { get; set; }
+        public string ErrorMessage { get; set; }
 
-        public void OnGet() { }
+        public void OnGet()
+        {
+        }
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (Username == "admin" && Password == "password")
+            if (Username == "admin" && Password == "password") // Replace with your authentication logic
             {
                 var claims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, Username),
-                    new Claim("Role", "Admin")
+                    new Claim(ClaimTypes.Name, Username)
                 };
 
-                var identity = new ClaimsIdentity(claims, "Cookies");
+                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 var principal = new ClaimsPrincipal(identity);
 
-                await HttpContext.SignInAsync("Cookies", principal);
+                await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
-                return RedirectToPage("/Index");
+                return LocalRedirect(Url.Content("~/"));
             }
 
-            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-            return Page();
+            ErrorMessage = "Invalid username or password.";
+            return Page(); // Reload the login page with the error message
         }
     }
 }

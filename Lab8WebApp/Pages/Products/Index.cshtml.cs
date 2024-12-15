@@ -1,29 +1,28 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using Lab8Library.Data;
 using Lab8Library.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Lab8WebApp.Pages.Products
 {
+    [Authorize]
     public class IndexModel : PageModel
     {
-        private readonly Lab8Library.Data.ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public IndexModel(Lab8Library.Data.ApplicationDbContext context)
+        public IndexModel(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        public IList<Product> Product { get;set; } = default!;
+        public IList<Product> Products { get; set; } = default!;
 
         public async Task OnGetAsync()
         {
-            Product = await _context.Products.ToListAsync();
+            Products = await _context.Products
+                .Include(p => p.Categories) // Include related categories
+                .ToListAsync();
         }
     }
 }

@@ -2,41 +2,36 @@
 @model Lab8WebApp.Pages.Products.IndexModel
 
 @{
-    ViewData["Title"] = "Index";
+ViewData["Title"] = "Products";
 }
 
-<h1>Index</h1>
+<h1>Products</h1>
 
 <p>
     <a asp-page="Create">Create New</a>
 </p>
 <table class="table">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Product[0].Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Product[0].Price)
-            </th>
-            <th></th>
-        </tr>
+    <tr>
+        <th>@Html.DisplayNameFor(model => model.Products[0].Name)</th>
+        <th>@Html.DisplayNameFor(model => model.Products[0].Price)</th>
+        <th>@Html.DisplayNameFor(model => model.Products[0].Categories)</th>
+        <th></th>
+    </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Product) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+    @foreach (var product in Model.Products)
+    {
+    <tr>
+        <td>@Html.DisplayFor(modelItem => product.Name)</td>
+        <td>@Html.DisplayFor(modelItem => product.Price)</td>
+        <td>@Html.DisplayFor(modelItem => product.Categories.Count)</td>
+        <td>
+            <a asp-page="Edit" asp-route-id="@product.Id">Edit</a> |
+            <a asp-page="Details" asp-route-id="@product.Id">Details</a> |
+            <a asp-page="Delete" asp-route-id="@product.Id">Delete</a>
+        </td>
+    </tr>
+    }
     </tbody>
 </table>
